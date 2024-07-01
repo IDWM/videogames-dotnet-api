@@ -19,6 +19,7 @@ public static class ApplicationServiceExtensions
             options.UseSqlite(config.GetConnectionString("DefaultConnection"));
         });
         services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddScoped<IPhotoService, PhotoService>();
         services.AddScoped<IVideoGameRepository, VideoGameRepository>();
 
