@@ -1,4 +1,3 @@
-using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Mvc;
 using videogames_dotnet_api.Src.DTOs;
 using videogames_dotnet_api.Src.Interfaces;
@@ -14,6 +13,12 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
         [FromForm] CreateVideoGameDto createVideoGameDto
     )
     {
+        if (await _videoGameRepository.ExistsVideoGameByNameAsync(createVideoGameDto.Name))
+        {
+            ErrorDto errorDto = new() { Error = "El videojuego ya existe" };
+            return TypedResults.BadRequest(errorDto);
+        }
+
         try
         {
             var videoGame = await _videoGameRepository.CreateVideoGameAsync(createVideoGameDto);
@@ -24,5 +29,12 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
             ErrorDto errorDto = new() { Error = e.Message };
             return TypedResults.BadRequest(errorDto);
         }
+    }
+
+    [HttpGet]
+    public async Task<IResult> GetVideoGames()
+    {
+        var videoGames = await _videoGameRepository.GetVideoGamesAsync();
+        return TypedResults.Ok(videoGames);
     }
 }
