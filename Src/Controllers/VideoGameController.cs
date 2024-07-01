@@ -15,7 +15,7 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
     {
         if (await _videoGameRepository.ExistsVideoGameByNameAsync(createVideoGameDto.Name))
         {
-            ErrorDto errorDto = new() { Error = "El videojuego ya existe" };
+            ErrorDto errorDto = new() { Error = "Videojuego no encontrado" };
             return TypedResults.BadRequest(errorDto);
         }
 
@@ -45,7 +45,7 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
 
         if (videoGame == null)
         {
-            ErrorDto errorDto = new() { Error = "El videojuego no existe" };
+            ErrorDto errorDto = new() { Error = "Videojuego no encontrado" };
             return TypedResults.NotFound(errorDto);
         }
 
