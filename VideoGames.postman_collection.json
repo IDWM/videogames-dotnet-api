@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "e0941d75-1240-40c3-a9eb-c75c1eef051b",
+		"name": "VideoGames",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25678350"
+	},
+	"item": [
+		{
+			"name": "Create video game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Name",
+							"value": "GTA IV",
+							"type": "text"
+						},
+						{
+							"key": "Description",
+							"value": "Juego de disparos",
+							"type": "text"
+						},
+						{
+							"key": "Platform",
+							"value": "PC",
+							"type": "text"
+						},
+						{
+							"key": "Price",
+							"value": "59990",
+							"type": "text"
+						},
+						{
+							"key": "ReleaseDate",
+							"value": "16-10-2008",
+							"type": "text"
+						},
+						{
+							"key": "Image",
+							"type": "file",
+							"src": "/C:/Users/jiriv/Downloads/gtav.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/videogame",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"videogame"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get video games",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/videogame",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"videogame"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get video game by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/videogame/1",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"videogame",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update video game by ID",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "Description",
+							"value": "Juego de disparos",
+							"type": "text"
+						},
+						{
+							"key": "Platform",
+							"value": "PS5",
+							"type": "text"
+						},
+						{
+							"key": "Price",
+							"value": "49990",
+							"type": "text"
+						},
+						{
+							"key": "ReleaseDate",
+							"value": "17-09-2013",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api}}/videogame/1",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"videogame",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete video game by ID",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{api}}/videogame/1",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"videogame",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "api",
+			"value": "http://localhost:5000/api",
+			"type": "string"
+		}
+	]
+}
