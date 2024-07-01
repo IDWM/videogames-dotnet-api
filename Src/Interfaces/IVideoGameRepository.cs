@@ -9,4 +9,5 @@ public interface IVideoGameRepository
     Task<object> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto);
     Task<object> UpdateVideoGameAsync(int id, UpdateVideoGameDto updateVideoGameDto);
     Task<object> DeleteVideoGameAsync(int id);
+    Task<bool> ExistsVideoGameByNameAsync(string name);
 }

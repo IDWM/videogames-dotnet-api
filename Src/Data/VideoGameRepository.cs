@@ -1,13 +1,20 @@
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 using videogames_dotnet_api.Src.DTOs;
 using videogames_dotnet_api.Src.Interfaces;
 using videogames_dotnet_api.Src.Models;
 
 namespace videogames_dotnet_api.Src.Data;
 
-public class VideoGameRepository(DataContext dataContext, IPhotoService photoService)
-    : IVideoGameRepository
+public class VideoGameRepository(
+    DataContext dataContext,
+    IMapper mapper,
+    IPhotoService photoService
+) : IVideoGameRepository
 {
     private readonly DataContext _dataContext = dataContext;
+    private readonly IMapper _mapper = mapper;
     private readonly IPhotoService _photoService = photoService;
 
     public async Task<object> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto)
@@ -19,17 +26,14 @@ public class VideoGameRepository(DataContext dataContext, IPhotoService photoSer
             throw new Exception("Error al subir la imagen");
         }
 
-        VideoGame videoGame =
-            new()
+        VideoGame videoGame = _mapper.Map<VideoGame>(
+            createVideoGameDto,
+            opts =>
             {
-                Name = createVideoGameDto.Name,
-                Description = createVideoGameDto.Description,
-                Platform = createVideoGameDto.Platform,
-                Price = createVideoGameDto.Price,
-                ReleaseDate = createVideoGameDto.ReleaseDate,
-                ImageUrl = result.SecureUrl.AbsoluteUri,
-                PublicId = result.PublicId
-            };
+                opts.Items["Image"] = result.SecureUrl.AbsoluteUri;
+                opts.Items["PublicId"] = result.PublicId;
+            }
+        );
 
         await _dataContext.VideoGames.AddAsync(videoGame);
 
@@ -46,14 +50,21 @@ public class VideoGameRepository(DataContext dataContext, IPhotoService photoSer
         throw new NotImplementedException();
     }
 
+    public Task<bool> ExistsVideoGameByNameAsync(string name)
+    {
+        return _dataContext.VideoGames.AnyAsync(x => x.Name == name);
+    }
+
     public Task<object> GetVideoGameByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task<IEnumerable<object>> GetVideoGamesAsync()
+    public async Task<IEnumerable<object>> GetVideoGamesAsync()
     {
-        throw new NotImplementedException();
+        return await _dataContext
+            .VideoGames.ProjectTo<VideoGameDto>(_mapper.ConfigurationProvider)
+            .ToListAsync();
     }
 
     public Task<object> UpdateVideoGameAsync(int id, UpdateVideoGameDto updateVideoGameDto)
