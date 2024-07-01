@@ -1,6 +1,5 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
 using videogames_dotnet_api.Src.DTOs;
 using videogames_dotnet_api.Src.Interfaces;
