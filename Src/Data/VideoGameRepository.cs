@@ -55,9 +55,11 @@ public class VideoGameRepository(
         return _dataContext.VideoGames.AnyAsync(x => x.Name == name);
     }
 
-    public Task<object> GetVideoGameByIdAsync(int id)
+    public async Task<object?> GetVideoGameByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return await _dataContext
+            .VideoGames.ProjectTo<VideoGameDto>(_mapper.ConfigurationProvider)
+            .FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public async Task<IEnumerable<object>> GetVideoGamesAsync()

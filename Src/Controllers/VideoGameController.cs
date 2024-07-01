@@ -37,4 +37,18 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
         var videoGames = await _videoGameRepository.GetVideoGamesAsync();
         return TypedResults.Ok(videoGames);
     }
+
+    [HttpGet("{id}")]
+    public async Task<IResult> GetVideoGameById([FromRoute] int id)
+    {
+        var videoGame = await _videoGameRepository.GetVideoGameByIdAsync(id);
+
+        if (videoGame == null)
+        {
+            ErrorDto errorDto = new() { Error = "El videojuego no existe" };
+            return TypedResults.NotFound(errorDto);
+        }
+
+        return TypedResults.Ok(videoGame);
+    }
 }
