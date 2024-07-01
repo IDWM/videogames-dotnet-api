@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using videogames_dotnet_api.Src.Data;
+using videogames_dotnet_api.Src.Helpers;
 using videogames_dotnet_api.Src.Interfaces;
 using videogames_dotnet_api.Src.Services;
 
@@ -17,7 +18,9 @@ public static class ApplicationServiceExtensions
         {
             options.UseSqlite(config.GetConnectionString("DefaultConnection"));
         });
+        services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
         services.AddScoped<IPhotoService, PhotoService>();
+        services.AddScoped<IVideoGameRepository, VideoGameRepository>();
 
         return services;
     }
