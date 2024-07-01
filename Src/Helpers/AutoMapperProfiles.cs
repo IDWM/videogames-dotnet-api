@@ -19,5 +19,7 @@ public class AutoMapperProfiles : Profile
             );
 
         CreateMap<VideoGame, VideoGameDto>();
+
+        CreateMap<UpdateVideoGameDto, VideoGame>();
     }
 }

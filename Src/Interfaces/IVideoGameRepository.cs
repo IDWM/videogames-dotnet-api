@@ -4,10 +4,10 @@ namespace videogames_dotnet_api.Src.Interfaces;
 
 public interface IVideoGameRepository
 {
-    Task<IEnumerable<object>> GetVideoGamesAsync();
-    Task<object?> GetVideoGameByIdAsync(int id);
-    Task<object> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto);
-    Task<object> UpdateVideoGameAsync(int id, UpdateVideoGameDto updateVideoGameDto);
-    Task<object> DeleteVideoGameAsync(int id);
+    Task<IEnumerable<VideoGameDto>> GetVideoGamesAsync();
+    Task<VideoGameDto?> GetVideoGameByIdAsync(int id);
+    Task<VideoGameDto> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto);
+    Task<VideoGameDto> UpdateVideoGameAsync(int id, UpdateVideoGameDto updateVideoGameDto);
+    Task<VideoGameDto> DeleteVideoGameAsync(int id);
     Task<bool> ExistsVideoGameByNameAsync(string name);
 }

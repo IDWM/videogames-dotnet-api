@@ -51,4 +51,37 @@ public class VideoGameController(IVideoGameRepository videoGameRepository) : Bas
 
         return TypedResults.Ok(videoGame);
     }
+
+    [HttpPut("{id}")]
+    public async Task<IResult> UpdateVideoGameAsync(
+        [FromRoute] int id,
+        [FromForm] UpdateVideoGameDto updateVideoGameDto
+    )
+    {
+        try
+        {
+            var videoGame = await _videoGameRepository.UpdateVideoGameAsync(id, updateVideoGameDto);
+            return TypedResults.Ok(videoGame);
+        }
+        catch (Exception e)
+        {
+            ErrorDto errorDto = new() { Error = e.Message };
+            return TypedResults.BadRequest(errorDto);
+        }
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IResult> DeleteVideoGameAsync([FromRoute] int id)
+    {
+        try
+        {
+            var videoGame = await _videoGameRepository.DeleteVideoGameAsync(id);
+            return TypedResults.Ok(videoGame);
+        }
+        catch (Exception e)
+        {
+            ErrorDto errorDto = new() { Error = e.Message };
+            return TypedResults.BadRequest(errorDto);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CloudinaryDotNet.Actions;
 using Microsoft.EntityFrameworkCore;
 using videogames_dotnet_api.Src.DTOs;
 using videogames_dotnet_api.Src.Interfaces;
@@ -17,7 +18,7 @@ public class VideoGameRepository(
     private readonly IMapper _mapper = mapper;
     private readonly IPhotoService _photoService = photoService;
 
-    public async Task<object> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto)
+    public async Task<VideoGameDto> CreateVideoGameAsync(CreateVideoGameDto createVideoGameDto)
     {
         var result = await _photoService.AddPhotoAsync(createVideoGameDto.Image);
 
@@ -39,15 +40,28 @@ public class VideoGameRepository(
 
         if (0 < await _dataContext.SaveChangesAsync())
         {
-            return videoGame;
+            VideoGameDto videoGameDto = _mapper.Map<VideoGameDto>(videoGame);
+            return videoGameDto;
         }
 
         throw new Exception("Error al crear el videojuego");
     }
 
-    public Task<object> DeleteVideoGameAsync(int id)
+    public async Task<VideoGameDto> DeleteVideoGameAsync(int id)
     {
-        throw new NotImplementedException();
+        VideoGame videoGame =
+            await _dataContext.VideoGames.FindAsync(id)
+            ?? throw new Exception("Videojuego no encontrado");
+
+        _dataContext.VideoGames.Remove(videoGame);
+
+        if (0 < await _dataContext.SaveChangesAsync())
+        {
+            VideoGameDto videoGameDto = _mapper.Map<VideoGameDto>(videoGame);
+            return videoGameDto;
+        }
+
+        throw new Exception("Error al eliminar el videojuego");
     }
 
     public Task<bool> ExistsVideoGameByNameAsync(string name)
@@ -55,22 +69,37 @@ public class VideoGameRepository(
         return _dataContext.VideoGames.AnyAsync(x => x.Name == name);
     }
 
-    public async Task<object?> GetVideoGameByIdAsync(int id)
+    public async Task<VideoGameDto?> GetVideoGameByIdAsync(int id)
     {
         return await _dataContext
             .VideoGames.ProjectTo<VideoGameDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<object>> GetVideoGamesAsync()
+    public async Task<IEnumerable<VideoGameDto>> GetVideoGamesAsync()
     {
         return await _dataContext
             .VideoGames.ProjectTo<VideoGameDto>(_mapper.ConfigurationProvider)
             .ToListAsync();
     }
 
-    public Task<object> UpdateVideoGameAsync(int id, UpdateVideoGameDto updateVideoGameDto)
+    public async Task<VideoGameDto> UpdateVideoGameAsync(
+        int id,
+        UpdateVideoGameDto updateVideoGameDto
+    )
     {
-        throw new NotImplementedException();
+        VideoGame videoGame =
+            await _dataContext.VideoGames.FindAsync(id)
+            ?? throw new Exception("Videojuego no encontrado");
+
+        _mapper.Map(updateVideoGameDto, videoGame);
+
+        if (0 < await _dataContext.SaveChangesAsync())
+        {
+            VideoGameDto videoGameDto = _mapper.Map<VideoGameDto>(videoGame);
+            return videoGameDto;
+        }
+
+        throw new Exception("Error al actualizar el videojuego");
     }
 }
