@@ -8,6 +8,7 @@ public static class WebApplicationExtensions
     public static void ConfigureApp(this WebApplication app)
     {
         app.MapControllers();
+        app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
 
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;

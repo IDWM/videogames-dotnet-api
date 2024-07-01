@@ -13,6 +13,7 @@ public static class ApplicationServiceExtensions
         IConfiguration config
     )
     {
+        services.AddCors();
         services.AddControllers();
         services.AddDbContext<DataContext>(options =>
         {
